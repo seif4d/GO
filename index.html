@@ -3,85 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GO | مشروع اختصار الروابط الذكي 🚀</title>
-    <!-- خط Cairo الجميل -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700;900&display=swap" rel="stylesheet">
-    <!-- أيقونات FontAwesome -->
+    <title>THE SHADOW NEXUS 👤 - Your Custom URL Shortener</title>
+    <!-- Font Awesome للأيقونات -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            --primary: #6c5ce7;
-            --secondary: #00cec9;
-            --accent: #fd79a8;
-            --bg: #0f0c29;
-            --glass: rgba(255, 255, 255, 0.05);
-            --border: rgba(255, 255, 255, 0.1);
+            --primary: #00f2fe; /* Cyan for glitch/matrix */
+            --secondary: #6c5ce7; /* Purple/Blue for accents */
+            --background: #0a0a1a; /* Very dark, almost black */
+            --glass-bg: rgba(0, 242, 254, 0.03); /* Subtle glass background */
+            --glass-border: rgba(0, 242, 254, 0.1); /* Subtle glass border */
+            --text-color: #e0e0e0; /* Light grey for main text */
+            --highlight-color: #ffffff; /* White for intense parts */
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
 
         body {
-            font-family: 'Cairo', sans-serif;
-            background-color: var(--bg);
-            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Clean, modern font */
+            background-color: var(--background);
+            color: var(--text-color);
             overflow-x: hidden;
             line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
-        /* خلفية متحركة */
-        .background-shapes {
+        /* Matrix/Glitch Background */
+        .matrix-background {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1;
+            background: var(--background);
             overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px; /* For 3D effects */
         }
-        .shape {
+        .matrix-stream {
             position: absolute;
-            filter: blur(80px);
-            opacity: 0.6;
-            animation: float 10s infinite alternate;
+            font-size: 15px;
+            color: var(--primary);
+            opacity: 0.7;
+            text-shadow: 0 0 5px var(--primary), 0 0 10px var(--primary);
+            animation: matrix-fall 15s linear infinite, glitch 5s infinite alternate;
+            white-space: nowrap;
+            pointer-events: none; /* Prevent interaction */
         }
-        .s1 { width: 400px; height: 400px; background: var(--primary); top: -100px; left: -100px; }
-        .s2 { width: 300px; height: 300px; background: var(--secondary); bottom: 10%; right: -50px; animation-delay: 2s; }
-        .s3 { width: 200px; height: 200px; background: var(--accent); top: 40%; left: 30%; animation-delay: 4s; opacity: 0.4; }
+        .matrix-stream:nth-child(odd) { animation-duration: 12s; }
+        .matrix-stream:nth-child(even) { animation-duration: 18s; }
+        .matrix-stream:nth-child(3n) { color: rgba(0, 255, 180, 0.8); text-shadow: 0 0 7px rgba(0, 255, 180, 0.8); animation-duration: 14s; }
+        .matrix-stream:nth-child(5n) { opacity: 0.5; color: #6c5ce7; text-shadow: 0 0 4px #6c5ce7; animation-duration: 20s; }
 
-        @keyframes float {
-            0% { transform: translateY(0) rotate(0deg); }
-            100% { transform: translateY(50px) rotate(20deg); }
+        @keyframes matrix-fall {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100vh); }
+        }
+        @keyframes glitch {
+            0% { transform: translate(0); opacity: 0.8; }
+            20% { transform: translate(-5px, 5px); opacity: 0.7; }
+            40% { transform: translate(5px, -5px); opacity: 0.9; }
+            60% { transform: translate(-5px, 5px); opacity: 0.7; }
+            80% { transform: translate(5px, -5px); opacity: 0.8; }
+            100% { transform: translate(0); opacity: 0.8; }
         }
 
-        /* Navbar */
+        /* Overlay for better readability */
+        .overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6); /* Dark overlay */
+            z-index: 0;
+        }
+
+        /* Navigation */
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 20px 50px;
-            backdrop-filter: blur(10px);
             position: fixed;
             width: 100%;
-            z-index: 1000;
-            background: rgba(15, 12, 41, 0.8);
-            border-bottom: 1px solid var(--border);
+            z-index: 100;
+            background: rgba(10, 10, 26, 0.8); /* Darker nav */
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--glass-border);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
-        .logo { font-size: 1.8rem; font-weight: 900; color: white; text-decoration: none; }
-        .logo span { color: var(--secondary); }
+        .logo { font-size: 1.8rem; font-weight: 900; color: var(--highlight-color); text-decoration: none; }
+        .logo span { color: var(--primary); }
         .github-btn {
-            background: var(--glass);
-            padding: 10px 20px;
+            background: var(--glass-bg);
+            padding: 10px 25px;
             border-radius: 50px;
             text-decoration: none;
-            color: white;
-            border: 1px solid var(--border);
-            transition: 0.3s;
+            color: var(--highlight-color);
+            border: 1px solid var(--glass-border);
+            transition: 0.3s ease;
             display: flex;
             align-items: center;
             gap: 10px;
+            font-weight: bold;
         }
-        .github-btn:hover { background: var(--primary); transform: scale(1.05); }
-
-        /* Container */
-        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+        .github-btn:hover { 
+            background: var(--secondary); 
+            transform: scale(1.05); 
+            border-color: var(--secondary);
+            color: white;
+        }
 
         /* Hero Section */
         header {
@@ -90,65 +122,156 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding-top: 80px;
+            padding-top: 80px; /* For nav height */
+            position: relative; /* For overlay */
+            z-index: 1;
         }
+        .hero-content {
+            max-width: 700px;
+            padding: 20px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
+            animation: floatIn 1s ease-out forwards;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+        @keyframes floatIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .hero-content h1 {
-            font-size: 4rem;
+            font-size: 3.5rem;
             margin-bottom: 20px;
             line-height: 1.2;
+            color: var(--highlight-color);
+            text-shadow: 0 0 15px var(--primary), 0 0 25px var(--secondary);
+            animation: glitchText 3s infinite alternate-reverse;
         }
-        .hero-content h1 span {
-            background: linear-gradient(to right, var(--secondary), var(--primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        @keyframes glitchText {
+            0% { text-shadow: 0 0 15px var(--primary), 0 0 25px var(--secondary); }
+            25% { text-shadow: 2px 0 15px var(--primary), -2px 0 25px var(--secondary); }
+            50% { text-shadow: -2px 0 15px var(--primary), 2px 0 25px var(--secondary); }
+            75% { text-shadow: 1px 0 15px var(--primary), -1px 0 25px var(--secondary); }
+            100% { text-shadow: 0 0 15px var(--primary), 0 0 25px var(--secondary); }
         }
+
         .hero-content p {
             font-size: 1.2rem;
             color: #ccc;
-            max-width: 700px;
-            margin: 0 auto 40px;
+            margin-bottom: 40px;
         }
+        
+        /* The Portrait/Avatar */
+        .hacker-portrait {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            background: url('https://via.placeholder.com/150/6c5ce7/ffffff?text=SHADOW') no-repeat center center; /* Replace with your actual image or placeholder */
+            background-size: cover;
+            border: 4px solid var(--primary);
+            box-shadow: 0 0 20px var(--primary), 0 0 30px var(--secondary), 0 0 40px var(--accent);
+            animation: pulseGlow 3s infinite alternate;
+            opacity: 0.9;
+        }
+        @keyframes pulseGlow {
+            0% { transform: scale(1); box-shadow: 0 0 20px var(--primary), 0 0 30px var(--secondary), 0 0 40px var(--accent); }
+            100% { transform: scale(1.05); box-shadow: 0 0 30px var(--primary), 0 0 50px var(--secondary), 0 0 60px var(--accent); opacity: 1; }
+        }
+
         .cta-btn {
-            background: linear-gradient(45deg, var(--primary), var(--accent));
-            color: white;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: var(--background); /* Dark text for contrast */
             padding: 15px 40px;
             border-radius: 50px;
             text-decoration: none;
             font-weight: bold;
             font-size: 1.2rem;
-            box-shadow: 0 10px 20px rgba(108, 92, 231, 0.4);
-            transition: 0.3s;
+            box-shadow: 0 10px 25px rgba(0, 242, 254, 0.4);
+            transition: 0.3s ease;
+            display: inline-block;
         }
-        .cta-btn:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(108, 92, 231, 0.6); }
+        .cta-btn:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 15px 35px rgba(0, 242, 254, 0.6); 
+            background: linear-gradient(45deg, var(--secondary), var(--primary)); /* Invert gradient */
+        }
 
         /* Features Section */
-        .features { padding: 100px 0; }
-        .section-title { text-align: center; margin-bottom: 60px; font-size: 2.5rem; }
-        
+        .features {
+            padding: 100px 20px;
+            position: relative;
+            z-index: 1;
+        }
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+            font-size: 2.8rem;
+            color: var(--highlight-color);
+            text-shadow: 0 0 10px var(--primary);
+        }
+        .section-title::after { /* Glitch effect on title */
+            content: attr(data-text);
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            color: var(--secondary);
+            text-shadow: 1px 0 0 var(--secondary), -1px 0 0 var(--primary);
+            animation: glitchTitle 5s infinite linear alternate-reverse;
+        }
+        @keyframes glitchTitle {
+            0% { clip: rect(50px, 300px, 200px, 200px); }
+            10% { clip: rect(100px, 300px, 150px, 200px); }
+            20% { clip: rect(20px, 300px, 100px, 200px); }
+            30% { clip: rect(120px, 300px, 180px, 200px); }
+            40% { clip: rect(80px, 300px, 120px, 200px); }
+            50% { clip: rect(150px, 300px, 50px, 200px); }
+            60% { clip: rect(20px, 300px, 180px, 200px); }
+            70% { clip: rect(100px, 300px, 150px, 200px); }
+            80% { clip: rect(120px, 300px, 50px, 200px); }
+            90% { clip: rect(80px, 300px, 200px, 200px); }
+            100% { clip: rect(50px, 300px, 100px, 200px); }
+        }
+
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 30px;
         }
         .card {
-            background: var(--glass);
+            background: var(--glass-bg);
             padding: 30px;
             border-radius: 20px;
-            border: 1px solid var(--border);
-            backdrop-filter: blur(10px);
-            transition: 0.3s;
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(15px);
+            transition: 0.3s ease;
             text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
         }
-        .card:hover { transform: translateY(-10px); background: rgba(255, 255, 255, 0.1); border-color: var(--secondary); }
-        .icon { font-size: 3rem; margin-bottom: 20px; color: var(--secondary); }
-        .card h3 { margin-bottom: 15px; font-size: 1.5rem; }
-        .card p { color: #aaa; }
+        .card:hover { 
+            transform: translateY(-10px); 
+            background: rgba(0, 242, 254, 0.08); /* More intense glow on hover */
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(0, 242, 254, 0.3);
+        }
+        .icon { 
+            font-size: 3rem; 
+            margin-bottom: 20px; 
+            color: var(--primary); 
+            text-shadow: 0 0 10px var(--primary);
+        }
+        .card h3 { margin-bottom: 15px; font-size: 1.6rem; color: var(--highlight-color); }
+        .card p { color: #bbb; font-size: 1rem; }
 
-        /* Search & Directory Section */
+        /* Directory Section */
         .directory-section {
-            padding: 100px 0;
-            background: rgba(0,0,0,0.3);
-            border-top: 1px solid var(--border);
+            padding: 100px 20px;
+            position: relative;
+            background: rgba(10, 10, 26, 0.5); /* Slightly darker for depth */
+            border-top: 1px solid var(--glass-border);
         }
         .search-box {
             position: relative;
@@ -159,15 +282,19 @@
             width: 100%;
             padding: 20px;
             border-radius: 50px;
-            border: 2px solid var(--border);
+            border: 2px solid var(--glass-border);
             background: rgba(0,0,0,0.5);
             color: white;
             font-size: 1.2rem;
             outline: none;
-            transition: 0.3s;
+            transition: 0.3s ease;
             font-family: inherit;
+            box-shadow: inset 0 0 10px rgba(0, 242, 254, 0.1);
         }
-        .search-box input:focus { border-color: var(--primary); box-shadow: 0 0 20px rgba(108, 92, 231, 0.3); }
+        .search-box input:focus { 
+            border-color: var(--primary); 
+            box-shadow: inset 0 0 15px rgba(0, 242, 254, 0.3), 0 0 20px rgba(0, 242, 254, 0.3);
+        }
 
         .links-container {
             max-width: 800px;
@@ -177,157 +304,237 @@
             gap: 15px;
         }
         .link-card {
-            background: var(--glass);
+            background: var(--glass-bg);
             padding: 20px;
             border-radius: 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border: 1px solid var(--border);
-            transition: 0.2s;
+            border: 1px solid var(--glass-border);
+            transition: 0.2s ease;
             cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
-        .link-card:hover { background: rgba(255,255,255,0.1); transform: scale(1.02); }
-        .link-info h4 { color: var(--secondary); font-size: 1.3rem; margin-bottom: 5px; }
-        .link-info p { color: #888; font-size: 0.9rem; max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .link-card:hover { 
+            background: rgba(0, 242, 254, 0.08); 
+            transform: scale(1.02); 
+            box-shadow: 0 8px 25px rgba(0, 242, 254, 0.2);
+        }
+        .link-info h4 { 
+            color: var(--primary); 
+            font-size: 1.4rem; 
+            margin-bottom: 5px;
+            text-shadow: 0 0 8px var(--primary);
+        }
+        .link-info p { 
+            color: #bbb; 
+            font-size: 0.9rem; 
+            max-width: 350px; 
+            white-space: nowrap; 
+            overflow: hidden; 
+            text-overflow: ellipsis; 
+        }
         .copy-btn {
             background: transparent;
-            border: 1px solid var(--border);
-            color: white;
-            padding: 10px 15px;
+            border: 1px solid var(--glass-border);
+            color: var(--highlight-color);
+            padding: 12px 18px;
             border-radius: 10px;
             cursor: pointer;
-            transition: 0.2s;
+            transition: 0.2s ease;
+            font-size: 1.2rem;
         }
-        .copy-btn:hover { background: var(--primary); border-color: var(--primary); }
+        .copy-btn:hover { 
+            background: var(--secondary); 
+            border-color: var(--secondary); 
+            color: white;
+        }
 
         /* Footer */
         footer {
             text-align: center;
             padding: 40px;
             color: #777;
-            border-top: 1px solid var(--border);
-            background: #0b091e;
+            background: rgba(10, 10, 26, 0.8); /* Match nav */
+            border-top: 1px solid var(--glass-border);
+            margin-top: auto; /* Push to bottom */
+            z-index: 1;
+            position: relative;
         }
 
-        /* Responsive */
+        /* Responsive Adjustments */
         @media (max-width: 768px) {
-            .hero-content h1 { font-size: 2.5rem; }
-            nav { padding: 20px; }
-            .logo { font-size: 1.4rem; }
+            nav { padding: 15px 20px; }
+            .logo { font-size: 1.5rem; }
+            .github-btn { padding: 8px 18px; font-size: 0.9rem; }
+            .hero-content h1 { font-size: 2.8rem; }
+            .hero-content p { font-size: 1rem; }
+            .hacker-portrait { width: 100px; height: 100px; border-width: 3px; }
+            .section-title { font-size: 2rem; }
+            .card p { font-size: 0.9rem; }
+            .search-box input { font-size: 1rem; padding: 15px; }
+            .link-info h4 { font-size: 1.2rem; }
+            .link-info p { max-width: 200px; }
+        }
+        @media (max-width: 480px) {
+            .hero-content h1 { font-size: 2.2rem; }
+            .cta-btn { padding: 12px 30px; font-size: 1rem; }
+            .grid { grid-template-columns: 1fr; }
+            .link-card { flex-direction: column; text-align: center; gap: 10px; }
+            .link-info p { max-width: 100%; }
+            .copy-btn { margin-top: 10px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- خلفية جمالية -->
-    <div class="background-shapes">
-        <div class="shape s1"></div>
-        <div class="shape s2"></div>
-        <div class="shape s3"></div>
+    <!-- Matrix/Glitch Background -->
+    <div class="matrix-background">
+        <div class="overlay"></div>
+        <div class="matrix-stream">01011001 01000101 01010011 00100000 01001100 01001001 01001110 01001011 01010011</div>
+        <div class="matrix-stream" style="--i: 1;">01001110 01001111 01010100 01001000 01001001 01001110 01000111 00100000 01000001 01000011 01000011 01000101 01010000 01010100 00101110</div>
+        <div class="matrix-stream" style="--i: 2;">01000111 01001111 00100000 01010000 01010010 01001111 01010100 01000101 01000011 01010100 00100000 01011001 01001111 01010101</div>
+        <div class="matrix-stream" style="--i: 3;">10101010 00100000 11110000 00100000 01010100 01010101 01010010 01001110 00100000 01000001 01000011 01010100 01001001 01001111 01001110</div>
+        <div class="matrix-stream" style="--i: 4;">00110011 01010111 00100000 01010010 01000101 01000001 01001100 00100000 01001110 01001111 01010100 00100000 01010110 01001001 01010010 01010101 01010011</div>
+        <div class="matrix-stream" style="--i: 5;">01010010 01000101 01000001 01001100 00100000 01001110 01001111 01010100 00100000 01010110 01001001 01010010 01010101 01010011 00100000 01001100 01001111 01000111 01001001 01000011</div>
     </div>
 
-    <!-- نافبار -->
+    <!-- Navigation Bar -->
     <nav>
-        <a href="#" class="logo">GO <span>LINKS</span></a>
-        <!-- ضع رابط الـ Repo الخاص بك هنا -->
+        <a href="#" class="logo">SHADOW <span>LINKS</span></a>
         <a href="https://github.com/seif4d/GO" target="_blank" class="github-btn">
-            <i class="fab fa-github"></i> GitHub Repo
+            <i class="fab fa-github"></i> Source Code
         </a>
     </nav>
 
-    <!-- الهيرو سكشن (مقدمة) -->
+    <!-- Hero Section -->
     <header>
-        <div class="container hero-content">
-            <h1>اختصار الروابط<br><span>بشكل أذكى وأسرع</span></h1>
-            <p>نظام مفتوح المصدر بالكامل لاستضافة اختصارات الروابط الخاصة بك باستخدام GitHub Pages مجانًا. لا سيرفرات، لا تكاليف، فقط سرعة.</p>
-            <a href="#directory" class="cta-btn">تصفح الروابط 👇</a>
+        <div class="hero-content">
+            <div class="hacker-portrait"></div>
+            <h1>I AM <br> <span>THE CODE</span></h1>
+            <p>The architect of shadows, transforming the digital chaos into ordered shortcuts. Welcome to my Nexus.</p>
+            <a href="#directory" class="cta-btn">ACCESS THE VAULT</a>
         </div>
     </header>
 
-    <!-- المميزات -->
+    <!-- Features Section -->
     <section class="features container">
-        <h2 class="section-title">لماذا هذا المشروع؟ 🤔</h2>
+        <h2 class="section-title" data-text="FEATURES">FEATURES</h2>
         <div class="grid">
             <div class="card">
-                <div class="icon"><i class="fas fa-bolt"></i></div>
-                <h3>سرعة خيالية</h3>
-                <p>لا توجد قواعد بيانات معقدة، ملف JSON بسيط يتم قراءته في أجزاء من الثانية.</p>
+                <div class="icon"><i class="fas fa-terminal"></i></div>
+                <h3>Zero Latency</h3>
+                <p>Instantaneous redirects powered by static hosting. No delays, just pure speed.</p>
             </div>
             <div class="card">
-                <div class="icon"><i class="fas fa-ghost"></i></div>
-                <h3>خدعة 404</h3>
-                <p>نستخدم صفحة الخطأ 404 لتوجيه الزوار إلى وجهتهم الصحيحة بذكاء ودون سيرفر.</p>
+                <div class="icon"><i class="fas fa-robot"></i></div>
+                <h3>Intelligent Redirects</h3>
+                <p>Leveraging the 404 page as a redirect engine. Elegant, efficient, and invisible.</p>
             </div>
             <div class="card">
-                <div class="icon"><i class="fas fa-code-branch"></i></div>
-                <h3>مفتوح المصدر</h3>
-                <p>يمكنك استنساخ المستودع (Fork) وبناء نظامك الخاص في 5 دقائق فقط.</p>
+                <div class="icon"><i class="fas fa-lock-open"></i></div>
+                <h3>Open Source</h3>
+                <p>The system is yours to explore, fork, and enhance. Transparency is key.</p>
             </div>
         </div>
     </section>
 
-    <!-- قسم دليل الروابط (التطبيق) -->
+    <!-- Directory Section -->
     <section id="directory" class="directory-section">
         <div class="container">
-            <h2 class="section-title">🔎 دليل الاختصارات</h2>
+            <h2 class="section-title" data-text="DIRECTORY">DIRECTORY</h2>
             
             <div class="search-box">
-                <input type="text" id="searchInput" placeholder="ابحث عن اسم الاختصار أو الرابط..." onkeyup="filterLinks()">
+                <input type="text" id="searchInput" placeholder="Search access code or destination..." onkeyup="filterLinks()">
             </div>
 
             <div class="links-container" id="linksContainer">
                 <div style="text-align: center; padding: 40px; font-size: 1.2rem;">
-                    <i class="fas fa-spinner fa-spin"></i> جاري جلب البيانات...
+                    <i class="fas fa-spinner fa-spin"></i> Authenticating Nexus...
                 </div>
             </div>
         </div>
     </section>
 
     <footer>
-        <p>Developed with ❤️ and ☕ by <strong>Seif4d</strong> using GitHub Pages</p>
+        <p>Built by <a href="https://github.com/seif4d" target="_blank">SEIF4D</a> | The Shadow Nexus</p>
     </footer>
 
-    <!-- الجافاسكريبت (المحرك) -->
+    <!-- Javascript -->
     <script>
-        // ⚠️ مهم: تأكد أن هذا يطابق اسم الـ Repo الخاص بك
-        const repoName = "/GO"; 
+        const repoName = "/GO"; // ⚠️ Change this if your repo name is different!
         let allLinks = {};
 
-        // جلب البيانات
+        // Simulate Matrix stream generation
+        function generateMatrixStreams() {
+            const streamContainer = document.querySelector('.matrix-background');
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+=-[]{}|;:,.<>?';
+            const numStreams = 15; // More streams for a denser effect
+
+            for (let i = 0; i < numStreams; i++) {
+                const stream = document.createElement('div');
+                stream.className = 'matrix-stream';
+                // Randomize text, speed, and delay
+                let text = '';
+                const streamLength = Math.floor(Math.random() * 60) + 20; // Length between 20 and 80 chars
+                for (let j = 0; j < streamLength; j++) {
+                    text += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                stream.textContent = text;
+                stream.style.left = `${Math.random() * 100}%`;
+                stream.style.animationDuration = `${Math.random() * 10 + 10}s`; // Duration between 10 and 20 seconds
+                stream.style.animationDelay = `${Math.random() * -10}s`; // Random delay to spread them out
+                stream.style.fontSize = `${Math.random() * 5 + 12}px`; // Random font size
+                
+                // Apply nth-child like styling randomly
+                const randMod = Math.floor(Math.random() * 6);
+                if (randMod === 0) stream.style.color = `rgba(0, 255, 180, ${Math.random()*0.3 + 0.5})`;
+                if (randMod === 1) stream.style.opacity = `${Math.random()*0.3 + 0.4}`;
+                if (randMod === 2) stream.style.textShadow = `0 0 ${Math.random()*5+2}px rgba(108, 92, 231, ${Math.random()*0.5 + 0.3})`;
+
+                streamContainer.appendChild(stream);
+            }
+        }
+
+        // Fetch Links from JSON
         async function fetchLinks() {
             try {
                 const response = await fetch('links.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
                 const data = await response.json();
                 allLinks = data;
                 renderLinks(data);
             } catch (error) {
-                console.error("Error:", error);
+                console.error("Nexus data retrieval failed:", error);
                 document.getElementById('linksContainer').innerHTML = 
-                    '<p style="text-align:center; color: #ff7675;">حدث خطأ أثناء تحميل الروابط 😞</p>';
+                    '<p style="text-align:center; color: #ff6b6b; font-size: 1.1rem;">Nexus is offline. Unable to retrieve data. 😞</p>';
             }
         }
 
-        // عرض الروابط
+        // Render Links in the UI
         function renderLinks(links) {
             const container = document.getElementById('linksContainer');
             container.innerHTML = '';
             const keys = Object.keys(links);
 
             if (keys.length === 0) {
-                container.innerHTML = '<p style="text-align:center; color: #aaa;">لا توجد نتائج مطابقة 🤷‍♂️</p>';
+                container.innerHTML = '<p style="text-align:center; color: #aaa; font-size: 1.1rem;">No active access codes found. 🤷‍♂️</p>';
                 return;
             }
 
             keys.forEach(key => {
                 const originalUrl = links[key];
-                const fullShortUrl = window.location.origin + repoName + '/' + key;
+                // Ensure correct base URL, especially if running locally or on a custom domain
+                const baseUrl = window.location.origin.endsWith('/') ? window.location.origin.slice(0, -1) : window.location.origin;
+                const fullShortUrl = baseUrl + repoName + '/' + key;
 
                 const card = document.createElement('div');
                 card.className = 'link-card';
-                // عند الضغط على الكارت يفتح الرابط
                 card.onclick = (e) => {
-                   if(!e.target.classList.contains('copy-btn') && !e.target.parentElement.classList.contains('copy-btn')) {
+                   // Prevent opening URL if copy button was clicked
+                   if (!e.target.classList.contains('copy-btn') && !e.target.closest('.copy-btn')) {
                        window.open(fullShortUrl, '_blank');
                    }
                 };
@@ -337,7 +544,7 @@
                         <h4>/${key}</h4>
                         <p>${originalUrl}</p>
                     </div>
-                    <button class="copy-btn" onclick="copyLink('${fullShortUrl}')" title="نسخ الرابط">
+                    <button class="copy-btn" onclick="copyLink('${fullShortUrl}')" title="Copy Access Code">
                         <i class="fas fa-copy"></i>
                     </button>
                 `;
@@ -345,7 +552,7 @@
             });
         }
 
-        // البحث
+        // Filter Links by Search Query
         function filterLinks() {
             const query = document.getElementById('searchInput').value.toLowerCase();
             const filtered = {};
@@ -358,16 +565,32 @@
             renderLinks(filtered);
         }
 
-        // النسخ
+        // Copy Link to Clipboard
         function copyLink(text) {
             navigator.clipboard.writeText(text).then(() => {
-                // تأثير بسيط للزر
-                alert('تم نسخ الرابط المختصر! ✅');
+                // Visual feedback for copy action
+                const button = event.target.closest('.copy-btn');
+                const originalHTML = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-check"></i>';
+                button.style.backgroundColor = 'var(--primary)';
+                button.style.borderColor = 'var(--primary)';
+                
+                setTimeout(() => {
+                    button.innerHTML = originalHTML;
+                    button.style.backgroundColor = 'transparent';
+                    button.style.borderColor = 'var(--glass-border)';
+                }, 1500);
+            }).catch(err => {
+                console.error('Failed to copy link: ', err);
+                alert('Copy failed. Please copy manually.');
             });
         }
 
-        // تشغيل عند التحميل
-        fetchLinks();
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            generateMatrixStreams(); // Start the background streams
+            fetchLinks(); // Load the links
+        });
     </script>
 
 </body>
