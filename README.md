@@ -1,35 +1,61 @@
-# GO 🚀 - مختصر الروابط الذكي
+# GO 🚀 | Custom URL Shortener
 
-أهلاً بك في مستودع **GO**! 👋
-هذا المشروع هو عبارة عن أداة بسيطة وقوية لاختصار الروابط باستخدام استضافة **GitHub Pages** المجانية.
+Welcome to **GO**! 👋
+This is a lightweight, maintenance-free URL shortener hosted 100% on **GitHub Pages**.
 
-فكرة المشروع هي تحويل الروابط الطويلة إلى روابط قصيرة وسهلة الحفظ تحت الدومين الخاص بي. 😎
-
----
-
-## 🌟 كيف يعمل؟
-
-المشروع يعتمد على حيلة ذكية (Smart Hack):
-1. عند الدخول لرابط غير موجود (مثلاً `/GO/1`).
-2. يقوم GitHub بتحميل صفحة `404.html`.
-3. كود الجافاسكريبت داخل الصفحة يقرأ الرقم `1`.
-4. يبحث عنه في ملف `links.json`.
-5. يقوم بتوجيه الزائر للرابط الأصلي فوراً! ⚡️
+It allows me to turn long, ugly URLs into clean, short links using my own domain. 😎
 
 ---
 
-## 🛠️ طريقة إضافة رابط جديد
+## 🌟 How It Works
 
-الموضوع سهل جداً، فقط قم بتعديل ملف [`links.json`](./links.json):
+This project uses a clever "Static 404 Hack":
+1. When a user visits a link that doesn't exist (e.g., `/GO/1`).
+2. GitHub Pages triggers the `404.html` page.
+3. The JavaScript inside `404.html` grabs the path (`1`).
+4. It fetches `links.json` to find the matching URL.
+5. It redirects the user instantly! ⚡️
 
-1. افتح الملف.
-2. أضف سطر جديد يحتوي على "الاسم المختصر" و "الرابط الأصلي".
-3. احفظ التغييرات (Commit).
+---
 
-**مثال للكود:**
+## 🛠️ How to Add a New Link
+
+Adding a new short link is super easy. Just edit the [`links.json`](./links.json) file:
+
+1. Open `links.json`.
+2. Add a new key-value pair: `"ShortCode": "TargetURL"`.
+3. Commit the changes.
+
+**Example:**
 ```json
 {
   "1": "https://chatgpt.com",
   "fb": "https://facebook.com/seif4d",
   "portfolio": "https://seif4d.github.io"
 }
+```
+
+Now the links will work like this:
+- `seif4d.github.io/GO/1` ➡️ Redirects to ChatGPT
+- `seif4d.github.io/GO/fb` ➡️ Redirects to Facebook
+
+---
+
+## 📂 File Structure
+
+- **`links.json`**: 🗂 The database (where you store your links).
+- **`404.html`**: ⚙️ The engine (handles the redirection logic).
+- **`index.html`**: 🏠 The landing page (if someone visits the root URL).
+
+---
+
+## 🚀 Usage
+
+Feel free to fork this repository to create your own URL shortener!
+
+1. Fork the repo.
+2. Enable **GitHub Pages** in Settings.
+3. Update `links.json` with your own links.
+4. Update the `repoName` variable in `404.html` if you change the repo name.
+
+**Developed by Seif4d 👨‍💻**
