@@ -3,222 +3,349 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بوابة الروابط المختصرة | GO 🚀</title>
-    <!-- خط عربي جميل من جوجل -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <title>GO | مشروع اختصار الروابط الذكي 🚀</title>
+    <!-- خط Cairo الجميل -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <!-- أيقونات FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
         :root {
-            --primary: #4facfe;
-            --secondary: #00f2fe;
-            --bg: #10101c;
-            --card-bg: rgba(255, 255, 255, 0.05);
-            --text: #ffffff;
+            --primary: #6c5ce7;
+            --secondary: #00cec9;
+            --accent: #fd79a8;
+            --bg: #0f0c29;
+            --glass: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.1);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
 
         body {
             font-family: 'Cairo', sans-serif;
             background-color: var(--bg);
-            background-image: linear-gradient(135deg, #161625 0%, #1e1e30 100%);
-            color: var(--text);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-        }
-
-        /* التصميم الزجاجي */
-        .container {
-            width: 100%;
-            max-width: 600px;
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 30px;
-            margin-top: 50px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-            animation: fadeIn 1s ease-in-out;
-        }
-
-        header { text-align: center; margin-bottom: 30px; }
-        h1 { font-size: 2.5rem; margin-bottom: 10px; background: -webkit-linear-gradient(var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        p.subtitle { color: #aaa; font-size: 1.1rem; }
-
-        /* شريط البحث */
-        .search-box {
-            position: relative;
-            margin-bottom: 30px;
-        }
-        .search-box input {
-            width: 100%;
-            padding: 15px 20px;
-            border-radius: 50px;
-            border: none;
-            background: rgba(255, 255, 255, 0.1);
             color: white;
-            font-family: inherit;
-            font-size: 1rem;
-            outline: none;
-            transition: 0.3s;
-        }
-        .search-box input:focus {
-            background: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 0 15px rgba(79, 172, 254, 0.5);
+            overflow-x: hidden;
+            line-height: 1.6;
         }
 
-        /* قائمة الروابط */
-        .links-list {
-            list-style: none;
-            max-height: 400px;
-            overflow-y: auto;
+        /* خلفية متحركة */
+        .background-shapes {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            overflow: hidden;
         }
-        
-        /* شكل الرابط */
-        .link-item {
+        .shape {
+            position: absolute;
+            filter: blur(80px);
+            opacity: 0.6;
+            animation: float 10s infinite alternate;
+        }
+        .s1 { width: 400px; height: 400px; background: var(--primary); top: -100px; left: -100px; }
+        .s2 { width: 300px; height: 300px; background: var(--secondary); bottom: 10%; right: -50px; animation-delay: 2s; }
+        .s3 { width: 200px; height: 200px; background: var(--accent); top: 40%; left: 30%; animation-delay: 4s; opacity: 0.4; }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(50px) rotate(20deg); }
+        }
+
+        /* Navbar */
+        nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(255, 255, 255, 0.03);
-            margin-bottom: 10px;
-            padding: 15px;
-            border-radius: 12px;
+            padding: 20px 50px;
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(15, 12, 41, 0.8);
+            border-bottom: 1px solid var(--border);
+        }
+        .logo { font-size: 1.8rem; font-weight: 900; color: white; text-decoration: none; }
+        .logo span { color: var(--secondary); }
+        .github-btn {
+            background: var(--glass);
+            padding: 10px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: white;
+            border: 1px solid var(--border);
             transition: 0.3s;
-            cursor: pointer;
-            border-right: 4px solid transparent;
-        }
-        .link-item:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateX(-5px);
-            border-right-color: var(--secondary);
-        }
-
-        .link-key {
-            font-weight: bold;
-            color: var(--primary);
-            font-size: 1.2rem;
             display: flex;
             align-items: center;
             gap: 10px;
         }
-        .link-url {
-            color: #888;
-            font-size: 0.8rem;
-            max-width: 150px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
+        .github-btn:hover { background: var(--primary); transform: scale(1.05); }
 
-        /* زر النسخ */
-        .action-btn {
-            background: none;
-            border: none;
-            color: white;
-            cursor: pointer;
+        /* Container */
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+
+        /* Hero Section */
+        header {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding-top: 80px;
+        }
+        .hero-content h1 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        .hero-content h1 span {
+            background: linear-gradient(to right, var(--secondary), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-content p {
             font-size: 1.2rem;
-            opacity: 0.7;
+            color: #ccc;
+            max-width: 700px;
+            margin: 0 auto 40px;
+        }
+        .cta-btn {
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            color: white;
+            padding: 15px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 10px 20px rgba(108, 92, 231, 0.4);
+            transition: 0.3s;
+        }
+        .cta-btn:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(108, 92, 231, 0.6); }
+
+        /* Features Section */
+        .features { padding: 100px 0; }
+        .section-title { text-align: center; margin-bottom: 60px; font-size: 2.5rem; }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .card {
+            background: var(--glass);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+            transition: 0.3s;
+            text-align: center;
+        }
+        .card:hover { transform: translateY(-10px); background: rgba(255, 255, 255, 0.1); border-color: var(--secondary); }
+        .icon { font-size: 3rem; margin-bottom: 20px; color: var(--secondary); }
+        .card h3 { margin-bottom: 15px; font-size: 1.5rem; }
+        .card p { color: #aaa; }
+
+        /* Search & Directory Section */
+        .directory-section {
+            padding: 100px 0;
+            background: rgba(0,0,0,0.3);
+            border-top: 1px solid var(--border);
+        }
+        .search-box {
+            position: relative;
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 20px;
+            border-radius: 50px;
+            border: 2px solid var(--border);
+            background: rgba(0,0,0,0.5);
+            color: white;
+            font-size: 1.2rem;
+            outline: none;
+            transition: 0.3s;
+            font-family: inherit;
+        }
+        .search-box input:focus { border-color: var(--primary); box-shadow: 0 0 20px rgba(108, 92, 231, 0.3); }
+
+        .links-container {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .link-card {
+            background: var(--glass);
+            padding: 20px;
+            border-radius: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid var(--border);
+            transition: 0.2s;
+            cursor: pointer;
+        }
+        .link-card:hover { background: rgba(255,255,255,0.1); transform: scale(1.02); }
+        .link-info h4 { color: var(--secondary); font-size: 1.3rem; margin-bottom: 5px; }
+        .link-info p { color: #888; font-size: 0.9rem; max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .copy-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 10px;
+            cursor: pointer;
             transition: 0.2s;
         }
-        .action-btn:hover { opacity: 1; color: var(--secondary); }
+        .copy-btn:hover { background: var(--primary); border-color: var(--primary); }
 
-        /* التذييل */
+        /* Footer */
         footer {
-            margin-top: auto;
-            padding: 20px;
-            color: #555;
-            font-size: 0.9rem;
+            text-align: center;
+            padding: 40px;
+            color: #777;
+            border-top: 1px solid var(--border);
+            background: #0b091e;
         }
 
-        /* سكرول بار مخصص */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); }
-        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #555; }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-content h1 { font-size: 2.5rem; }
+            nav { padding: 20px; }
+            .logo { font-size: 1.4rem; }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <header>
-            <h1>GO Links 🚀</h1>
-            <p class="subtitle">جميع اختصاراتي في مكان واحد</p>
-        </header>
-
-        <div class="search-box">
-            <input type="text" id="searchInput" placeholder="🔍 ابحث عن اختصار..." onkeyup="filterLinks()">
-        </div>
-
-        <ul class="links-list" id="linksContainer">
-            <li style="text-align: center; padding: 20px;">جاري تحميل الروابط... ⏳</li>
-        </ul>
+    <!-- خلفية جمالية -->
+    <div class="background-shapes">
+        <div class="shape s1"></div>
+        <div class="shape s2"></div>
+        <div class="shape s3"></div>
     </div>
 
+    <!-- نافبار -->
+    <nav>
+        <a href="#" class="logo">GO <span>LINKS</span></a>
+        <!-- ضع رابط الـ Repo الخاص بك هنا -->
+        <a href="https://github.com/seif4d/GO" target="_blank" class="github-btn">
+            <i class="fab fa-github"></i> GitHub Repo
+        </a>
+    </nav>
+
+    <!-- الهيرو سكشن (مقدمة) -->
+    <header>
+        <div class="container hero-content">
+            <h1>اختصار الروابط<br><span>بشكل أذكى وأسرع</span></h1>
+            <p>نظام مفتوح المصدر بالكامل لاستضافة اختصارات الروابط الخاصة بك باستخدام GitHub Pages مجانًا. لا سيرفرات، لا تكاليف، فقط سرعة.</p>
+            <a href="#directory" class="cta-btn">تصفح الروابط 👇</a>
+        </div>
+    </header>
+
+    <!-- المميزات -->
+    <section class="features container">
+        <h2 class="section-title">لماذا هذا المشروع؟ 🤔</h2>
+        <div class="grid">
+            <div class="card">
+                <div class="icon"><i class="fas fa-bolt"></i></div>
+                <h3>سرعة خيالية</h3>
+                <p>لا توجد قواعد بيانات معقدة، ملف JSON بسيط يتم قراءته في أجزاء من الثانية.</p>
+            </div>
+            <div class="card">
+                <div class="icon"><i class="fas fa-ghost"></i></div>
+                <h3>خدعة 404</h3>
+                <p>نستخدم صفحة الخطأ 404 لتوجيه الزوار إلى وجهتهم الصحيحة بذكاء ودون سيرفر.</p>
+            </div>
+            <div class="card">
+                <div class="icon"><i class="fas fa-code-branch"></i></div>
+                <h3>مفتوح المصدر</h3>
+                <p>يمكنك استنساخ المستودع (Fork) وبناء نظامك الخاص في 5 دقائق فقط.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- قسم دليل الروابط (التطبيق) -->
+    <section id="directory" class="directory-section">
+        <div class="container">
+            <h2 class="section-title">🔎 دليل الاختصارات</h2>
+            
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="ابحث عن اسم الاختصار أو الرابط..." onkeyup="filterLinks()">
+            </div>
+
+            <div class="links-container" id="linksContainer">
+                <div style="text-align: center; padding: 40px; font-size: 1.2rem;">
+                    <i class="fas fa-spinner fa-spin"></i> جاري جلب البيانات...
+                </div>
+            </div>
+        </div>
+    </section>
+
     <footer>
-        Designed with ❤️ by Seif4d
+        <p>Developed with ❤️ and ☕ by <strong>Seif4d</strong> using GitHub Pages</p>
     </footer>
 
+    <!-- الجافاسكريبت (المحرك) -->
     <script>
-        const repoName = "/GO"; // ⚠️ تأكد ان ده نفس اسم الـ Repo
+        // ⚠️ مهم: تأكد أن هذا يطابق اسم الـ Repo الخاص بك
+        const repoName = "/GO"; 
         let allLinks = {};
 
-        // جلب الروابط من ملف JSON وعرضها
-        async function loadLinks() {
+        // جلب البيانات
+        async function fetchLinks() {
             try {
                 const response = await fetch('links.json');
                 const data = await response.json();
                 allLinks = data;
-                renderList(data);
+                renderLinks(data);
             } catch (error) {
-                console.error("Error loading links:", error);
-                document.getElementById('linksContainer').innerHTML = "<li style='text-align:center; color:#ff6b6b'>فشل تحميل الروابط 😢</li>";
+                console.error("Error:", error);
+                document.getElementById('linksContainer').innerHTML = 
+                    '<p style="text-align:center; color: #ff7675;">حدث خطأ أثناء تحميل الروابط 😞</p>';
             }
         }
 
-        // دالة لعرض القائمة في HTML
-        function renderList(links) {
+        // عرض الروابط
+        function renderLinks(links) {
             const container = document.getElementById('linksContainer');
             container.innerHTML = '';
-            
             const keys = Object.keys(links);
-            
-            if(keys.length === 0) {
-                container.innerHTML = "<li style='text-align:center;'>لا توجد روابط مطابقة 🤷‍♂️</li>";
+
+            if (keys.length === 0) {
+                container.innerHTML = '<p style="text-align:center; color: #aaa;">لا توجد نتائج مطابقة 🤷‍♂️</p>';
                 return;
             }
 
             keys.forEach(key => {
-                const url = links[key];
+                const originalUrl = links[key];
                 const fullShortUrl = window.location.origin + repoName + '/' + key;
-                
-                const li = document.createElement('li');
-                li.className = 'link-item';
-                li.onclick = () => window.open(fullShortUrl, '_blank'); // عند الضغط يفتح الرابط
-                
-                li.innerHTML = `
-                    <div>
-                        <div class="link-key">
-                            <span>🔗</span> ${key}
-                        </div>
-                        <div class="link-url">${url}</div>
+
+                const card = document.createElement('div');
+                card.className = 'link-card';
+                // عند الضغط على الكارت يفتح الرابط
+                card.onclick = (e) => {
+                   if(!e.target.classList.contains('copy-btn') && !e.target.parentElement.classList.contains('copy-btn')) {
+                       window.open(fullShortUrl, '_blank');
+                   }
+                };
+
+                card.innerHTML = `
+                    <div class="link-info">
+                        <h4>/${key}</h4>
+                        <p>${originalUrl}</p>
                     </div>
-                    <button class="action-btn" onclick="copyLink(event, '${fullShortUrl}')" title="نسخ الرابط">
-                        📋
+                    <button class="copy-btn" onclick="copyLink('${fullShortUrl}')" title="نسخ الرابط">
+                        <i class="fas fa-copy"></i>
                     </button>
                 `;
-                container.appendChild(li);
+                container.appendChild(card);
             });
         }
 
-        // دالة البحث
+        // البحث
         function filterLinks() {
             const query = document.getElementById('searchInput').value.toLowerCase();
             const filtered = {};
@@ -228,19 +355,20 @@
                     filtered[key] = value;
                 }
             }
-            renderList(filtered);
+            renderLinks(filtered);
         }
 
-        // دالة نسخ الرابط
-        function copyLink(e, text) {
-            e.stopPropagation(); // منع فتح الرابط عند الضغط على زر النسخ
+        // النسخ
+        function copyLink(text) {
             navigator.clipboard.writeText(text).then(() => {
-                alert('تم نسخ الرابط المختصر! ✅\n' + text);
+                // تأثير بسيط للزر
+                alert('تم نسخ الرابط المختصر! ✅');
             });
         }
 
-        // تشغيل الدالة عند فتح الصفحة
-        loadLinks();
+        // تشغيل عند التحميل
+        fetchLinks();
     </script>
+
 </body>
 </html>
