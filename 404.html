@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>جاري التوجيه... 🚀</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        .container {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        h1 { font-size: 2rem; margin-bottom: 10px; }
+        .spinner { font-size: 3rem; animation: spin 1s infinite linear; display: inline-block; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <div class="container" id="content">
+        <div class="spinner">⏳</div>
+        <h1>جاري البحث عن وجهتك...</h1>
+    </div>
+
+    <script>
+        // ⚠️ تأكد أن هذا الاسم يطابق اسم الـ Repo الخاص بك بالضبط
+        const repoName = "/GO"; 
+
+        // دالة لجلب الرابط
+        async function redirect() {
+            // مسار الصفحة الحالي (مثلاً /GO/1)
+            const path = window.location.pathname;
+            
+            // تنظيف المسار للحصول على الكلمة المختصرة فقط
+            // يحول /GO/1 إلى 1
+            // يحول /GO/google إلى google
+            let shortCode = path.replace(repoName, "").replace(/^\//, "").replace(/\/$/, "");
+
+            if (!shortCode) {
+                // لو مفيش كود، روح للصفحة الرئيسية
+                window.location.href = repoName + "/index.html";
+                return;
+            }
+
+            try {
+                // جلب ملف الروابط
+                const response = await fetch(repoName + '/links.json');
+                const links = await response.json();
+
+                if (links[shortCode]) {
+                    document.getElementById('content').innerHTML = `
+                        <div style="font-size:3rem">🚀</div>
+                        <h1>تم العثور على الرابط!</h1>
+                        <p>جاري نقلك الآن...</p>
+                    `;
+                    // التحويل للرابط الأصلي
+                    window.location.replace(links[shortCode]);
+                } else {
+                    document.getElementById('content').innerHTML = `
+                        <div style="font-size:3rem">🚫</div>
+                        <h1>الرابط غير موجود</h1>
+                        <p>تأكد من الرابط وحاول مرة أخرى.</p>
+                        <a href="${repoName}/" style="color:#3498db">العودة للرئيسية</a>
+                    `;
+                }
+            } catch (error) {
+                console.error(error);
+                document.getElementById('content').innerHTML = "<h1>حدث خطأ تقني 😢</h1>";
+            }
+        }
+
+        redirect();
+    </script>
+</body>
+</html>
