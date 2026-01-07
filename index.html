@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بوابة الروابط المختصرة | GO 🚀</title>
+    <!-- خط عربي جميل من جوجل -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4facfe;
+            --secondary: #00f2fe;
+            --bg: #10101c;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --text: #ffffff;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg);
+            background-image: linear-gradient(135deg, #161625 0%, #1e1e30 100%);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* التصميم الزجاجي */
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 50px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        header { text-align: center; margin-bottom: 30px; }
+        h1 { font-size: 2.5rem; margin-bottom: 10px; background: -webkit-linear-gradient(var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        p.subtitle { color: #aaa; font-size: 1.1rem; }
+
+        /* شريط البحث */
+        .search-box {
+            position: relative;
+            margin-bottom: 30px;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 15px 20px;
+            border-radius: 50px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-family: inherit;
+            font-size: 1rem;
+            outline: none;
+            transition: 0.3s;
+        }
+        .search-box input:focus {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 15px rgba(79, 172, 254, 0.5);
+        }
+
+        /* قائمة الروابط */
+        .links-list {
+            list-style: none;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        /* شكل الرابط */
+        .link-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.03);
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 12px;
+            transition: 0.3s;
+            cursor: pointer;
+            border-right: 4px solid transparent;
+        }
+        .link-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(-5px);
+            border-right-color: var(--secondary);
+        }
+
+        .link-key {
+            font-weight: bold;
+            color: var(--primary);
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .link-url {
+            color: #888;
+            font-size: 0.8rem;
+            max-width: 150px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* زر النسخ */
+        .action-btn {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1.2rem;
+            opacity: 0.7;
+            transition: 0.2s;
+        }
+        .action-btn:hover { opacity: 1; color: var(--secondary); }
+
+        /* التذييل */
+        footer {
+            margin-top: auto;
+            padding: 20px;
+            color: #555;
+            font-size: 0.9rem;
+        }
+
+        /* سكرول بار مخصص */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>GO Links 🚀</h1>
+            <p class="subtitle">جميع اختصاراتي في مكان واحد</p>
+        </header>
+
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="🔍 ابحث عن اختصار..." onkeyup="filterLinks()">
+        </div>
+
+        <ul class="links-list" id="linksContainer">
+            <li style="text-align: center; padding: 20px;">جاري تحميل الروابط... ⏳</li>
+        </ul>
+    </div>
+
+    <footer>
+        Designed with ❤️ by Seif4d
+    </footer>
+
+    <script>
+        const repoName = "/GO"; // ⚠️ تأكد ان ده نفس اسم الـ Repo
+        let allLinks = {};
+
+        // جلب الروابط من ملف JSON وعرضها
+        async function loadLinks() {
+            try {
+                const response = await fetch('links.json');
+                const data = await response.json();
+                allLinks = data;
+                renderList(data);
+            } catch (error) {
+                console.error("Error loading links:", error);
+                document.getElementById('linksContainer').innerHTML = "<li style='text-align:center; color:#ff6b6b'>فشل تحميل الروابط 😢</li>";
+            }
+        }
+
+        // دالة لعرض القائمة في HTML
+        function renderList(links) {
+            const container = document.getElementById('linksContainer');
+            container.innerHTML = '';
+            
+            const keys = Object.keys(links);
+            
+            if(keys.length === 0) {
+                container.innerHTML = "<li style='text-align:center;'>لا توجد روابط مطابقة 🤷‍♂️</li>";
+                return;
+            }
+
+            keys.forEach(key => {
+                const url = links[key];
+                const fullShortUrl = window.location.origin + repoName + '/' + key;
+                
+                const li = document.createElement('li');
+                li.className = 'link-item';
+                li.onclick = () => window.open(fullShortUrl, '_blank'); // عند الضغط يفتح الرابط
+                
+                li.innerHTML = `
+                    <div>
+                        <div class="link-key">
+                            <span>🔗</span> ${key}
+                        </div>
+                        <div class="link-url">${url}</div>
+                    </div>
+                    <button class="action-btn" onclick="copyLink(event, '${fullShortUrl}')" title="نسخ الرابط">
+                        📋
+                    </button>
+                `;
+                container.appendChild(li);
+            });
+        }
+
+        // دالة البحث
+        function filterLinks() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = {};
+            
+            for (const [key, value] of Object.entries(allLinks)) {
+                if (key.toLowerCase().includes(query) || value.toLowerCase().includes(query)) {
+                    filtered[key] = value;
+                }
+            }
+            renderList(filtered);
+        }
+
+        // دالة نسخ الرابط
+        function copyLink(e, text) {
+            e.stopPropagation(); // منع فتح الرابط عند الضغط على زر النسخ
+            navigator.clipboard.writeText(text).then(() => {
+                alert('تم نسخ الرابط المختصر! ✅\n' + text);
+            });
+        }
+
+        // تشغيل الدالة عند فتح الصفحة
+        loadLinks();
+    </script>
+</body>
+</html>
